@@ -1,5 +1,4 @@
 import os
-import uuid
 import shutil
 import tempfile
 import subprocess
@@ -16,18 +15,21 @@ def execute_code(code: str, timeout: int = 15, files=[]):
 
     try:
 
-        # validate dangerous imports
         validate_code(code)
 
         # restore uploaded files
         for file in files:
 
-            file_path = os.path.join(temp_dir, file.name)
+            file_path = os.path.join(
+                temp_dir,
+                file.name
+            )
 
             with open(file_path, "wb") as f:
-                f.write(base64.b64decode(file.base64))
+                f.write(
+                    base64.b64decode(file.base64)
+                )
 
-        # wrap matplotlib backend
         wrapped_code = f"""
 import matplotlib
 matplotlib.use('Agg')
@@ -35,7 +37,10 @@ matplotlib.use('Agg')
 {code}
 """
 
-        code_file = os.path.join(temp_dir, "main.py")
+        code_file = os.path.join(
+            temp_dir,
+            "main.py"
+        )
 
         with open(code_file, "w") as f:
             f.write(wrapped_code)
@@ -50,7 +55,10 @@ matplotlib.use('Agg')
             timeout=timeout
         )
 
-        execution_time = round(time.time() - start, 2)
+        execution_time = round(
+            time.time() - start,
+            2
+        )
 
         # runtime failure
         if result.returncode != 0:
@@ -58,6 +66,7 @@ matplotlib.use('Agg')
             error_message = "Runtime error"
 
             if result.stderr:
+
                 lines = result.stderr.strip().splitlines()
 
                 if lines:
@@ -67,6 +76,7 @@ matplotlib.use('Agg')
                 "success": False,
                 "status_code": 400,
                 "execution_time": execution_time,
+
                 "stdout": result.stdout,
                 "stderr": result.stderr,
 
@@ -75,15 +85,17 @@ matplotlib.use('Agg')
                 "error": {
                     "type": "RuntimeError",
                     "message": error_message,
-                    "friendly_message": "The Python code raised an exception during execution."
+                    "friendly_message":
+                        "The Python code raised an exception during execution."
                 }
             }
 
-       base_url = "https://june-python-sanbox.onrender.com"
-       artifacts = collect_artifacts(
-           temp_dir,
-           base_url
-       )
+        base_url = "https://june-python-sanbox.onrender.com"
+
+        artifacts = collect_artifacts(
+            temp_dir,
+            base_url
+        )
 
         return {
             "success": True,
@@ -113,7 +125,8 @@ matplotlib.use('Agg')
                 "type": "SyntaxError",
                 "message": str(e),
                 "line": e.lineno,
-                "friendly_message": f"Invalid Python syntax near line {e.lineno}."
+                "friendly_message":
+                    f"Invalid Python syntax near line {e.lineno}."
             }
         }
 
@@ -130,8 +143,11 @@ matplotlib.use('Agg')
 
             "error": {
                 "type": "TimeoutError",
-                "message": f"Execution exceeded {timeout} seconds.",
-                "friendly_message": "The Python code took too long to execute."
+                "message":
+                    f"Execution exceeded {timeout} seconds.",
+
+                "friendly_message":
+                    "The Python code took too long to execute."
             }
         }
 
@@ -149,9 +165,14 @@ matplotlib.use('Agg')
             "error": {
                 "type": type(e).__name__,
                 "message": str(e),
-                "friendly_message": "An internal execution error occurred."
+
+                "friendly_message":
+                    "An internal execution error occurred."
             }
         }
 
     finally:
-        shutil.rmtree(temp_dir, ignore_errors=True)
+        shutil.rmtree(
+            temp_dir,
+            ignore_errors=True
+        )
