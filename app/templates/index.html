@@ -10,55 +10,104 @@
 
 <link rel="stylesheet" href="/static/css/styles.css">
 
+<link
+    rel="stylesheet"
+    data-name="vs/editor/editor.main"
+    href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.52.2/min/vs/editor/editor.main.min.css"
+/>
+
 </head>
 
 <body>
 
-<div class="container">
+<div class="layout">
 
-    <div class="hero">
+    <aside class="sidebar">
 
-        <h1>
-            June Python Sandbox
-        </h1>
+        <h1>June Sandbox</h1>
 
-        <p>
-            AI-focused Python execution platform
-            for data science, visualization,
-            and computation.
+        <p class="subtitle">
+            AI Python Runtime
         </p>
 
-    </div>
+        <div class="examples">
 
-    <div class="playground">
+            <h3>Payload Examples</h3>
 
-        <div class="editor-panel">
+            <button class="example-btn"
+                onclick="loadExample('raw')">
+                Raw Execution
+            </button>
 
-            <h2>Python Playground</h2>
+            <button class="example-btn"
+                onclick="loadExample('filegen')">
+                File Generation
+            </button>
 
-            <textarea id="code-editor">
-print("hello world")
-            </textarea>
+            <button class="example-btn"
+                onclick="loadExample('analysis')">
+                CSV Analysis
+            </button>
 
-            <button id="run-btn">
-                Execute Code
+            <button class="example-btn"
+                onclick="loadExample('chart')">
+                Visualization
             </button>
 
         </div>
 
-        <div class="output-panel">
+        <div class="upload-section">
 
-            <h2>Output</h2>
+            <h3>Upload Files</h3>
 
-            <pre id="output"></pre>
+            <input
+                type="file"
+                id="file-input"
+                multiple
+            />
+
+            <button id="upload-btn">
+                Upload
+            </button>
+
+            <div id="uploaded-files"></div>
 
         </div>
 
-    </div>
+    </aside>
+
+    <main class="main-content">
+
+        <div class="topbar">
+
+            <button id="run-btn">
+                Execute
+            </button>
+
+        </div>
+
+        <div id="editor"></div>
+
+        <div class="output-wrapper">
+
+            <div class="output-card">
+
+                <h3>Response</h3>
+
+                <pre id="output"></pre>
+
+            </div>
+
+        </div>
+
+    </main>
 
 </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.52.2/min/vs/loader.min.js"></script>
 
 <script src="/static/js/app.js"></script>
 
 </body>
+
 </html>
