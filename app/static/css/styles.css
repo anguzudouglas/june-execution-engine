@@ -102,3 +102,109 @@ input[type="file"] {
     margin-bottom: 14px;
     width: 100%;
 }
+.topbar-actions {
+    display: flex;
+    gap: 12px;
+}
+
+#terminal-container {
+    height: 320px;
+    background: #020617;
+    border-top: 1px solid #1e293b;
+    display: flex;
+    flex-direction: column;
+}
+
+.terminal-header {
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    border-bottom: 1px solid #1e293b;
+    background: #0f172a;
+}
+
+.terminal-tabs {
+    display: flex;
+    gap: 12px;
+}
+
+.terminal-tab {
+    background: transparent;
+    color: white;
+    border: none;
+    padding: 10px 14px;
+    border-radius: 8px;
+}
+
+.active-tab {
+    background: #1e293b;
+}
+
+#response-panel,
+#artifacts-panel {
+    flex: 1;
+    overflow: auto;
+    padding: 16px;
+}
+
+#output {
+    margin: 0;
+    background: transparent;
+}
+
+#artifact-grid {
+    display: grid;
+    grid-template-columns: repeat(
+        auto-fill,
+        minmax(250px, 1fr)
+    );
+    gap: 16px;
+}
+
+.artifact-card {
+    background: #0f172a;
+    border-radius: 16px;
+    padding: 16px;
+    border: 1px solid #1e293b;
+}
+
+.artifact-preview {
+    margin-top: 12px;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.artifact-preview img {
+    width: 100%;
+    display: block;
+}
+
+.artifact-actions {
+    margin-top: 12px;
+    display: flex;
+    gap: 10px;
+}
+
+.download-btn {
+    text-decoration: none;
+    background: #38bdf8;
+    color: black;
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-weight: bold;
+    display: inline-block;
+}
+
+.hidden-terminal {
+    display: none !important;
+}
+
+.stdout {
+    color: #4ade80;
+}
+
+.stderr {
+    color: #f87171;
+}
