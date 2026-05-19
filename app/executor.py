@@ -30,6 +30,28 @@ def execute_code(code: str, timeout: int = 15, files=[],  base_url=""):
                     base64.b64decode(file.base64)
                 )
 
+                # restore uploaded uploads
+        for upload in uploads:
+
+            upload_path = os.path.join(
+                "storage",
+                "uploads",
+                upload["upload_id"],
+                upload["filename"]
+            )
+
+            if os.path.exists(upload_path):
+
+                destination = os.path.join(
+                    temp_dir,
+                    upload["filename"]
+                )
+
+                shutil.copy(
+                    upload_path,
+                    destination
+                )
+
         wrapped_code = f"""
 import matplotlib
 matplotlib.use('Agg')
