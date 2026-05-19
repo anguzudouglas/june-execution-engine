@@ -9,11 +9,13 @@ from app.validators import validate_code
 from app.artifacts import collect_artifacts
 
 
-def execute_code(code: str,
-                 timeout: int = 15,
-                 files=[],
-                 uploads=[], 
-                 base_url=""):
+def execute_code(
+  code: str,
+  timeout: int = 15,
+  files=[],
+  uploads=[], 
+  base_url=""
+):
 
     temp_dir = tempfile.mkdtemp(prefix="exec_")
 
