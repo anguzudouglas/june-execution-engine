@@ -25,6 +25,7 @@ async def execute(
         code=payload.code,
         timeout=payload.timeout,
         files=payload.files,
+        uploads=payload.uploads,
         base_url=base_url
     )
 
