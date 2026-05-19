@@ -4,11 +4,18 @@
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+/>
 
 <title>June Python Sandbox</title>
 
-<link rel="stylesheet" href="/static/css/styles.css">
+<link
+    rel="stylesheet"
+    href="/static/css/styles.css"
+/>
 
 <link
     rel="stylesheet"
@@ -24,33 +31,49 @@
 
     <aside class="sidebar">
 
-        <h1>June Sandbox</h1>
+        <div>
 
-        <p class="subtitle">
-            AI Python Runtime
-        </p>
+            <h1>
+                June Sandbox
+            </h1>
+
+            <p class="subtitle">
+                AI Python Runtime
+            </p>
+
+        </div>
 
         <div class="examples">
 
-            <h3>Payload Examples</h3>
+            <h3>
+                Payload Examples
+            </h3>
 
-            <button class="example-btn"
-                onclick="loadExample('raw')">
+            <button
+                class="example-btn"
+                onclick="loadExample('raw')"
+            >
                 Raw Execution
             </button>
 
-            <button class="example-btn"
-                onclick="loadExample('filegen')">
+            <button
+                class="example-btn"
+                onclick="loadExample('filegen')"
+            >
                 File Generation
             </button>
 
-            <button class="example-btn"
-                onclick="loadExample('analysis')">
+            <button
+                class="example-btn"
+                onclick="loadExample('analysis')"
+            >
                 CSV Analysis
             </button>
 
-            <button class="example-btn"
-                onclick="loadExample('chart')">
+            <button
+                class="example-btn"
+                onclick="loadExample('chart')"
+            >
                 Visualization
             </button>
 
@@ -58,7 +81,9 @@
 
         <div class="upload-section">
 
-            <h3>Upload Files</h3>
+            <h3>
+                Upload Files
+            </h3>
 
             <input
                 type="file"
@@ -80,21 +105,62 @@
 
         <div class="topbar">
 
-            <button id="run-btn">
-                Execute
-            </button>
+            <div class="topbar-actions">
+
+                <button id="run-btn">
+                    Execute
+                </button>
+
+                <button id="toggle-terminal-top">
+                    Toggle Terminal
+                </button>
+
+            </div>
 
         </div>
 
         <div id="editor"></div>
 
-        <div class="output-wrapper">
+        <div id="terminal-container">
 
-            <div class="output-card">
+            <div class="terminal-header">
 
-                <h3>Response</h3>
+                <div class="terminal-tabs">
+
+                    <button
+                        class="terminal-tab active-tab"
+                        id="response-tab"
+                    >
+                        Response
+                    </button>
+
+                    <button
+                        class="terminal-tab"
+                        id="artifacts-tab"
+                    >
+                        Artifacts
+                    </button>
+
+                </div>
+
+                <button id="toggle-terminal">
+                    Hide
+                </button>
+
+            </div>
+
+            <div id="response-panel">
 
                 <pre id="output"></pre>
+
+            </div>
+
+            <div
+                id="artifacts-panel"
+                style="display:none;"
+            >
+
+                <div id="artifact-grid"></div>
 
             </div>
 
