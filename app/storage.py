@@ -1,7 +1,6 @@
 import os
 import uuid
 import shutil
-from datetime import datetime, timedelta
 
 BASE_DIR = "storage/artifacts"
 
@@ -18,8 +17,14 @@ def save_artifact(temp_file_path):
 
     filename = os.path.basename(temp_file_path)
 
-    final_path = os.path.join(artifact_dir, filename)
+    final_path = os.path.join(
+        artifact_dir,
+        filename
+    )
 
-    shutil.copy2(temp_file_path, final_path)
+    shutil.copy2(
+        temp_file_path,
+        final_path
+    )
 
-    return artifact_id, final_path
+    return artifact_id, filename
