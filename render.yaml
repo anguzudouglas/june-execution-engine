@@ -1,5 +1,5 @@
 services:
   - type: web
-    name: python-exec-api
+    name: python-runtime
     runtime: docker
-    plan: free
+    autoDeploy: true
