@@ -1,0 +1,14 @@
+fastapi
+uvicorn[standard]
+pydantic
+pandas
+numpy
+matplotlib
+sympy
+scipy
+scikit-learn
+seaborn
+plotly
+openpyxl
+polars
+python-multipart
