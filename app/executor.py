@@ -79,7 +79,11 @@ matplotlib.use('Agg')
                 }
             }
 
-        artifacts = collect_artifacts(temp_dir)
+       base_url = "https://june-python-sanbox.onrender.com"
+       artifacts = collect_artifacts(
+           temp_dir,
+           base_url
+       )
 
         return {
             "success": True,
