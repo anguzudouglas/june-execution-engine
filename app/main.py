@@ -2,30 +2,24 @@ import os
 
 from fastapi import FastAPI
 from fastapi.responses import FileResponse
+from fastapi.responses import HTMLResponse
 
 from app.models import ExecuteRequest
 from app.executor import execute_code
 from app.cleanup import cleanup_artifacts
-
 from app.docs_page import get_docs_html
-from fastapi.responses import HTMLResponse
+
 
 app = FastAPI(
     title="Python Execution API"
 )
 
 
-@app.get("/")
+@app.get("/", response_class=HTMLResponse)
 async def root():
 
-    return {
-        "status": "running"
-    }
-
-@app.get("/docs-api", response_class=HTMLResponse)
-async def docs_api():
-
     return get_docs_html()
+
 
 @app.post("/execute")
 async def execute(request: ExecuteRequest):
