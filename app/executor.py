@@ -12,14 +12,14 @@ from app.artifacts import collect_artifacts
 
 def execute_code(code: str, timeout: int = 15, files=[]):
 
-    validate_code(code)
-
-    session_id = str(uuid.uuid4())
-
     temp_dir = tempfile.mkdtemp(prefix="exec_")
 
     try:
 
+        # validate dangerous imports
+        validate_code(code)
+
+        # restore uploaded files
         for file in files:
 
             file_path = os.path.join(temp_dir, file.name)
@@ -27,6 +27,7 @@ def execute_code(code: str, timeout: int = 15, files=[]):
             with open(file_path, "wb") as f:
                 f.write(base64.b64decode(file.base64))
 
+        # wrap matplotlib backend
         wrapped_code = f"""
 import matplotlib
 matplotlib.use('Agg')
@@ -51,23 +52,82 @@ matplotlib.use('Agg')
 
         execution_time = round(time.time() - start, 2)
 
+        # runtime failure
+        if result.returncode != 0:
+
+            error_message = "Runtime error"
+
+            if result.stderr:
+                lines = result.stderr.strip().splitlines()
+
+                if lines:
+                    error_message = lines[-1]
+
+            return {
+                "success": False,
+                "status_code": 400,
+                "execution_time": execution_time,
+                "stdout": result.stdout,
+                "stderr": result.stderr,
+
+                "artifacts": [],
+
+                "error": {
+                    "type": "RuntimeError",
+                    "message": error_message,
+                    "friendly_message": "The Python code raised an exception during execution."
+                }
+            }
+
         artifacts = collect_artifacts(temp_dir)
 
         return {
-            "success": result.returncode == 0,
+            "success": True,
+            "status_code": 200,
+            "execution_time": execution_time,
+
             "stdout": result.stdout,
             "stderr": result.stderr,
-            "execution_time": execution_time,
-            "artifacts": artifacts
+
+            "artifacts": artifacts,
+
+            "error": None
+        }
+
+    except SyntaxError as e:
+
+        return {
+            "success": False,
+            "status_code": 400,
+
+            "stdout": "",
+            "stderr": "",
+
+            "artifacts": [],
+
+            "error": {
+                "type": "SyntaxError",
+                "message": str(e),
+                "line": e.lineno,
+                "friendly_message": f"Invalid Python syntax near line {e.lineno}."
+            }
         }
 
     except subprocess.TimeoutExpired:
 
         return {
             "success": False,
+            "status_code": 408,
+
+            "stdout": "",
+            "stderr": "",
+
+            "artifacts": [],
+
             "error": {
                 "type": "TimeoutError",
-                "message": f"Execution exceeded {timeout} seconds"
+                "message": f"Execution exceeded {timeout} seconds.",
+                "friendly_message": "The Python code took too long to execute."
             }
         }
 
@@ -75,9 +135,17 @@ matplotlib.use('Agg')
 
         return {
             "success": False,
+            "status_code": 500,
+
+            "stdout": "",
+            "stderr": "",
+
+            "artifacts": [],
+
             "error": {
                 "type": type(e).__name__,
-                "message": str(e)
+                "message": str(e),
+                "friendly_message": "An internal execution error occurred."
             }
         }
 
