@@ -12,3 +12,7 @@ plotly
 openpyxl
 polars
 python-multipart
+jinja2
+aiofiles
+python-multipart
+httpx
