@@ -1,26 +1,25 @@
-from fastapi import FastAPI
-from app.models import ExecuteRequest
-from app.executor import execute_code
+from fastapi.responses import FileResponse
+import os
 
-app = FastAPI(
-    title="Python Execution API"
-)
+ARTIFACT_DIR = "storage/artifacts"
 
 
-@app.get("/")
-async def root():
-    return {
-        "status": "running"
-    }
+@app.get("/artifact/{artifact_id}/{filename}")
+async def get_artifact(artifact_id: str, filename: str):
 
-
-@app.post("/execute")
-async def execute(request: ExecuteRequest):
-
-    result = execute_code(
-        code=request.code,
-        timeout=request.timeout,
-        files=request.files
+    path = os.path.join(
+        ARTIFACT_DIR,
+        artifact_id,
+        filename
     )
 
-    return result
+    if not os.path.exists(path):
+        return {
+            "success": False,
+            "status_code": 404,
+            "error": {
+                "message": "Artifact not found"
+            }
+        }
+
+    return FileResponse(path)
