@@ -1,21 +1,11 @@
 import os
 import base64
 
-
-SUPPORTED_EXTENSIONS = [
-    ".png",
-    ".jpg",
-    ".jpeg",
-    ".pdf",
-    ".csv",
-    ".xlsx",
-    ".json",
-    ".html",
-    ".svg"
-]
+from app.storage import save_artifact
+from app.config import MAX_INLINE_SIZE_MB
 
 
-def collect_artifacts(temp_dir):
+def collect_artifacts(temp_dir, base_url):
 
     artifacts = []
 
@@ -26,18 +16,27 @@ def collect_artifacts(temp_dir):
         if not os.path.isfile(path):
             continue
 
-        ext = os.path.splitext(file)[1].lower()
+        size_mb = os.path.getsize(path) / (1024 * 1024)
 
-        if ext not in SUPPORTED_EXTENSIONS:
-            continue
+        if size_mb <= MAX_INLINE_SIZE_MB:
 
-        with open(path, "rb") as f:
-            encoded = base64.b64encode(f.read()).decode()
+            with open(path, "rb") as f:
+                encoded = base64.b64encode(f.read()).decode()
 
-        artifacts.append({
-            "name": file,
-            "type": ext,
-            "base64": encoded
-        })
+            artifacts.append({
+                "name": file,
+                "delivery": "inline",
+                "base64": encoded
+            })
+
+        else:
+
+            artifact_id, final_path = save_artifact(path)
+
+            artifacts.append({
+                "name": file,
+                "delivery": "url",
+                "url": f"{base_url}/artifact/{artifact_id}/{file}"
+            })
 
     return artifacts
