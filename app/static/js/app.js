@@ -1,3 +1,63 @@
+toggleTerminalBtn.addEventListener(
+    "click",
+    () => {
+
+        terminalContainer.classList.toggle(
+            "hidden-terminal"
+        );
+    }
+);
+
+toggleTerminalTopBtn.addEventListener(
+    "click",
+    () => {
+
+        terminalContainer.classList.toggle(
+            "hidden-terminal"
+        );
+    }
+);
+
+responseTab.addEventListener(
+    "click",
+    () => {
+
+        responsePanel.style.display =
+            "block";
+
+        artifactsPanel.style.display =
+            "none";
+
+        responseTab.classList.add(
+            "active-tab"
+        );
+
+        artifactsTab.classList.remove(
+            "active-tab"
+        );
+    }
+);
+
+artifactsTab.addEventListener(
+    "click",
+    () => {
+
+        responsePanel.style.display =
+            "none";
+
+        artifactsPanel.style.display =
+            "block";
+
+        artifactsTab.classList.add(
+            "active-tab"
+        );
+
+        responseTab.classList.remove(
+            "active-tab"
+        );
+    }
+);
+
 let editor;
 
 let uploadedFiles = [];
