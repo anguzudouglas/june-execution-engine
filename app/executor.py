@@ -9,7 +9,7 @@ from app.validators import validate_code
 from app.artifacts import collect_artifacts
 
 
-def execute_code(code: str, timeout: int = 15, files=[]):
+def execute_code(code: str, timeout: int = 15, files=[],  base_url=""):
 
     temp_dir = tempfile.mkdtemp(prefix="exec_")
 
@@ -89,8 +89,6 @@ matplotlib.use('Agg')
                         "The Python code raised an exception during execution."
                 }
             }
-
-        base_url = "https://june-python-sanbox.onrender.com"
 
         artifacts = collect_artifacts(
             temp_dir,
